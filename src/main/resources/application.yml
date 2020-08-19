@@ -1,0 +1,28 @@
+server:
+  port: 8443
+
+cloud:
+  aws:
+    region:
+      static: us-west-2
+#      auto: true
+    stack:
+      auto: false # disable AWS Cloudformation config gathering
+    credentials:
+      access-key: <YOUR ACCESS KEY>
+      secret-key: <YOUR SECRET ACCESS KEY>
+    end-point:
+      uri:
+
+app:
+  sqs:
+    queue: <queue_name>
+
+sqs:
+  queue:
+    arn: <arn_name>
+#
+#aws.accessKey=
+#aws.secretKey=
+#aws.region=
+
