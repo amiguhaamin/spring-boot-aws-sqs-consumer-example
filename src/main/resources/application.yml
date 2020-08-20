@@ -8,6 +8,8 @@ cloud:
 #      auto: true
     stack:
       auto: false # disable AWS Cloudformation config gathering
+    sqs:
+      name:
     credentials:
       access-key: <YOUR ACCESS KEY>
       secret-key: <YOUR SECRET ACCESS KEY>
@@ -21,8 +23,4 @@ app:
 sqs:
   queue:
     arn: <arn_name>
-#
-#aws.accessKey=
-#aws.secretKey=
-#aws.region=
 

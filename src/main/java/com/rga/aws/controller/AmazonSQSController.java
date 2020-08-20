@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rga.aws.model.SamsungPhone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.aws.core.support.documentation.RuntimeUse;
+import org.springframework.cloud.aws.messaging.config.annotation.NotificationMessage;
+import org.springframework.cloud.aws.messaging.listener.Acknowledgment;
+import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,12 +28,27 @@ public class AmazonSQSController {
         return "Hi " + name + ", Welcome to SQS Consumer!";
     }
 
-    // TODO: Change queue name
-    @SqsListener("sqs_queue.fifo")
-    public void process(String json) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        SamsungPhone samsungPhone = objectMapper.readValue(json, SamsungPhone.class);
-        log.info("Message received. Samsung phone name '{}' and description '{}'", samsungPhone.getName(), samsungPhone.getDescription());
+    /**
+     * Set deletion policy to NEVER so that you can acknowledge the incoming message post processing.
+     * If mentioned as ON_SUCCESS, message is not deleted when method throws an exception else message
+     * will be deleted. ALWAYS means message will be deleted irrespective of the message processing state
+     * With Acknowledgment you will have control at which point the message is ok to be deleted from the queue
+     *
+     * @param message
+     * @param acknowledgment
+     * @throws IOException
+     */
+    @RuntimeUse
+    @SqsListener(value = { "${cloud.aws.sqs.name}" }, deletionPolicy = SqsMessageDeletionPolicy.NEVER)
+    public void process(@NotificationMessage SamsungPhone message, Acknowledgment acknowledgment) throws IOException {
+        try {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        SamsungPhone samsungPhone = objectMapper.readValue(json, SamsungPhone.class);
+            log.info("Message received. Samsung phone name '{}' and description '{}'", message.getName(), message.getDescription());
+            acknowledgment.acknowledge();
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 }
