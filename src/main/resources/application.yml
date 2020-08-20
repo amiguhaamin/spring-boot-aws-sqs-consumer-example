@@ -10,11 +10,11 @@ cloud:
       auto: false # disable AWS Cloudformation config gathering
     sqs:
       name:
-    credentials:
-      access-key: <YOUR ACCESS KEY>
-      secret-key: <YOUR SECRET ACCESS KEY>
-    end-point:
-      uri:
+#    credentials:
+#     access-key: <YOUR ACCESS KEY>
+#      secret-key: <YOUR SECRET ACCESS KEY>
+#    end-point:
+#      uri:
 
 app:
   sqs:
