@@ -1,8 +1,7 @@
 package com.rga.aws.controller;
 
 import com.amazonaws.services.sqs.AmazonSQSAsync;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rga.aws.model.SamsungPhone;
+import com.rga.aws.model.SchoolDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.aws.core.support.documentation.RuntimeUse;
@@ -40,7 +39,7 @@ public class AmazonSQSController {
      */
     @RuntimeUse
     @SqsListener(value = { "${cloud.aws.sqs.name}" }, deletionPolicy = SqsMessageDeletionPolicy.NEVER)
-    public void process(@NotificationMessage SamsungPhone message, Acknowledgment acknowledgment) throws IOException {
+    public void process(@NotificationMessage SchoolDetails message, Acknowledgment acknowledgment) throws IOException {
         try {
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        SamsungPhone samsungPhone = objectMapper.readValue(json, SamsungPhone.class);
